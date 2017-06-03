@@ -1,5 +1,5 @@
 node {
-git"https://github.com/talukas/Calculator"
+git"https://github.com/talukas/" + repo 
 def mvnHome = tool 'Maven_3.5.0'
 sh "'${mvnHome}/bin/mvn' clean site -Dgroups="+ group
 stage('Test') {step([$class: 'Publisher', testResults: '**/testng-results.xml'])}
