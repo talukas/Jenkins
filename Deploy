@@ -1,5 +1,5 @@
 node {
 git "https://github.com/talukas/WS"
 def mvnHome = tool 'Maven_3.5.0'
-sh "'${mvnHome}/bin/mvn' clean package tomcat7:deploy"
+stage(Build & Deploy) {sh "'${mvnHome}/bin/mvn' clean package tomcat7" + group}
 }
