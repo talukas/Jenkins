@@ -1,0 +1,29 @@
+node {
+git 'https://github.com/[username]/jenkins.git'
+def mvnHome = tool 'Maven_3.5.0'
+def emailList = 'abc@gmail.com,xyz@gmail.com';
+try {
+currentBuild.result = "SUCCESS"
+stage('Compile') {sh "'${mvnHome}/bin/mvn' clean compile"}
+emailNotify(emailList)
+} catch (e) {
+currentBuild.result = "FAILURE"
+ emailNotify(emailList)
+}
+}
+def emailNotify (emailList) {
+if ('SUCCESS'.equals(currentBuild.result.toString())) {
+emailext (
+subject: "PASSED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+body: "PASSED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':".toString() +
+"\nCheck console output at ${env.BUILD_URL}console".toString(),
+to: emailList)
+}
+if ('FAILURE'.equals(currentBuild.result.toString())) {
+emailext (
+subject: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+ body: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':".toString() +
+"\nCheck console output at ${env.BUILD_URL}console".toString(),
+to: emailList)
+ }
+ }
