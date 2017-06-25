@@ -1,7 +1,7 @@
 node {
 git 'https://github.com/talukas/Weather_API'
 def mvnHome = tool 'Maven_3.5.0'
-def emailList = 'abc@gmail.com,xyz@gmail.com';
+def emailList = 'ttnlukashuk@yahoo.com,xyz@gmail.com';
 try {
 currentBuild.result = "SUCCESS"
 stage('Compile') {sh "'${mvnHome}/bin/mvn' clean compile"}
