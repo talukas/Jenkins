@@ -1,5 +1,5 @@
 node {
-git 'https://github.com/talukas/Calculator'
+git 'https://github.com/talukas/UnitTestsTeam_C'
 def mvnHome = tool 'Maven_3.5.0'
 def emailList = 'ttnlukashuk@yahoo.com,xyz@gmail.com';
 try {
