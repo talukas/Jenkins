@@ -1,7 +1,7 @@
 node {
 git 'https://github.com/talukas/UnitTestsTeam_C'
 def mvnHome = tool 'Maven_3.5.0'
-def emailList = 'ttnlukashuk@yahoo.com,xyz@gmail.com';
+def emailList = 'ttnlukashuk@yahoo.com,vasily_lukashuk@yahoo.com';
 try {
 currentBuild.result = "SUCCESS"
 stage('Compile') {sh "'${mvnHome}/bin/mvn' clean compile"}
