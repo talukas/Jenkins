@@ -1,0 +1,9 @@
+node {
+git"https://e4ca411896758da7b6c788037e7c1bd68a549660@github.com/YuriiChukhrai/UnitTestsTeam_C" 
+def mvnHome = tool 'Maven_3.5.0'
+sh "'${mvnHome}/bin/mvn' clean site"
+publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '\\target\\site', reportFiles: 'surefire-report.html', reportName: 'Surefire Report', reportTitles: ''])
+publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '\\target\\site', reportFiles: 'allure-maven-plugin.html', reportName: 'Allure Report', reportTitles: ''])
+stage('Test') {step([$class: 'Publisher', testResults: '**/testng-results.xml'])}
+//stage('CC') {step([$class: 'JacocoPublisher', execPattern:'**/**.exec', classPattern:'**/classes', sourcePattern:'**/src/main/SCVValidation'])}
+}
