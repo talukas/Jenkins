@@ -1,9 +1,36 @@
 node {
-git"https://github.com/YuriiChukhrai/UnitTestsTeam_C" 
+git:parameters: [string(name: 'Token', value: Token)] 
 def mvnHome = tool 'Maven_3.5.0'
 sh "'${mvnHome}/bin/mvn' clean site"
 publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '\\target\\site', reportFiles: 'surefire-report.html', reportName: 'Surefire Report', reportTitles: ''])
 publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '\\target\\site', reportFiles: 'allure-maven-plugin.html', reportName: 'Allure Report', reportTitles: ''])
 stage('Test') {step([$class: 'Publisher', testResults: '**/testng-results.xml'])}
-//stage('CC') {step([$class: 'JacocoPublisher', execPattern:'**/**.exec', classPattern:'**/classes', sourcePattern:'**/src/main/SCVValidation'])}
+def emailList = 'ttnlukashuk@yahoo.com';
+try {
+currentBuild.result = "SUCCESS"
+stage('Compile') {sh "'${mvnHome}/bin/mvn' clean compile"}
+emailNotify(emailList)
+} catch (e) {
+currentBuild.result = "FAILURE"
+ emailNotify(emailList)
 }
+}
+def emailNotify (emailList) {
+if ('SUCCESS'.equals(currentBuild.result.toString())) {
+emailext (
+subject: "PASSED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+body: "PASSED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':".toString() +
+"\nCheck Surefire Report at ${env.JOB_URL}".toString(),
+
+to: emailList)
+}
+if ('FAILURE'.equals(currentBuild.result.toString())) {
+emailext (
+subject: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+ body: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':".toString() +
+"\nCheck Surefire Report at ${env.JOB_URL}Surefire_Report".toString(),
+to: emailList)
+ }
+
+}
+
